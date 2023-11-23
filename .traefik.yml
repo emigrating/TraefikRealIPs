@@ -1,12 +1,12 @@
-displayName: Demo Plugin
+displayName: RealIPs from reverse proxies
 type: middleware
 iconPath: .assets/icon.png
 
-import: github.com/traefik/plugindemo
+import: github.com/emigrating/TraefikRealIPs
 
-summary: '[Demo] Add Request Header'
+summary: 'Get the real IP and protocols from reverse proxies'
 
 testData:
-  Headers:
-    X-Demo: test
-    X-URL: '{{URL}}'
+  disableDefault: false
+  trustip:
+    - 2400:cb00::/32
