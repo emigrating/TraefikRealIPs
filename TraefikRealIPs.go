@@ -125,11 +125,11 @@ func (r *RealIPOverWriter) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
         existingFor := req.Header.Get(xForwardFor)
 
         // Constructing X-Forwarded-For header with proper order
-        if existingFor != "" {
-            existingFor = req.Header.Get(cfConnectingIP) + ", " + existingFor
-        } else {
+//        if existingFor != "" {
+//            existingFor = req.Header.Get(cfConnectingIP) + ", " + existingFor
+//        } else {
             existingFor = req.Header.Get(cfConnectingIP)
-        }
+//        }
 
         req.Header.Set(xForwardFor, existingFor)
         req.Header.Set(xRealIP, req.Header.Get(cfConnectingIP)) // Set X-Real-IP to the Cloudflare IP
