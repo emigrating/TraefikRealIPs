@@ -91,6 +91,10 @@ func (r *RealIPOverWriter) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
         http.Error(rw, "Unknown source", http.StatusInternalServerError)
         return
     }
+
+	incomingXFF := req.Header.Get(xForwardFor)
+    log.Printf("Incoming X-Forwarded-For: %s", incomingXFF)
+
 	if trustResult.isError {
 		http.Error(rw, "Unknown source", http.StatusBadRequest)
 		return
@@ -122,6 +126,9 @@ func (r *RealIPOverWriter) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
         } else {
             existingFor = req.Header.Get(cfConnectingIP)
         }
+
+        modifiedXFF := req.Header.Get(xForwardFor)
+        log.Printf("Modified X-Forwarded-For before setting: %s", modifiedXFF)
 
         req.Header.Set(xForwardFor, existingFor)
         req.Header.Set(xRealIP, req.Header.Get(cfConnectingIP)) // Set X-Real-IP to the Cloudflare IP
