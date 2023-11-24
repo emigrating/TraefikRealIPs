@@ -7,7 +7,7 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/emigrating/RealIPs/ips"
+	"github.com/emigrating/TraefikRealIPs/ips"
 )
 
 const (
