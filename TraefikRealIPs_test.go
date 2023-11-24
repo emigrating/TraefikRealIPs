@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	plugin "github.com/emigrating/TraefikReralIPs"
+	plugin "github.com/emigrating/TraefikRealIPs"
 )
 
 func TestNew(t *testing.T) {
@@ -16,7 +16,7 @@ func TestNew(t *testing.T) {
 
 	ctx := context.Background()
 	next := http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {})
-	handler, err := plugin.New(ctx, next, cfg, "cloudflarewarp")
+	handler, err := plugin.New(ctx, next, cfg, "TraefikRealIPs")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -175,7 +175,7 @@ func TestError(t *testing.T) {
 
 	ctx := context.Background()
 	next := http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {})
-	_, err := plugin.New(ctx, next, cfg, "cloudflarewarp")
+	_, err := plugin.New(ctx, next, cfg, "TraefikRealIPs")
 	if err == nil {
 		t.Fatalf("expected error, got none")
 	}
