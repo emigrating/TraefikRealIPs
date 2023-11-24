@@ -17,6 +17,9 @@ const (
 	xForwardProto  = "X-Forwarded-Proto"
 	cfConnectingIP = "CF-Connecting-IP"
 	cfVisitor      = "CF-Visitor"
+
+	dbgPreXFF = "X-DBG-Forward-For"
+	dbgPostXFF = "X-DBG-Forward-For"
 )
 
 // Config the plugin configuration.
@@ -93,7 +96,8 @@ func (r *RealIPOverWriter) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
     }
 
 	incomingXFF := req.Header.Get(xForwardFor)
-    log.Printf("Incoming X-Forwarded-For: %s", incomingXFF)
+	req.Header.Set(dbgPreXFF, incomingXFF)
+#	log.Printf("Incoming X-Forwarded-For: %s", incomingXFF)
 
 	if trustResult.isError {
 		http.Error(rw, "Unknown source", http.StatusBadRequest)
@@ -128,7 +132,8 @@ func (r *RealIPOverWriter) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
         }
 
         modifiedXFF := req.Header.Get(xForwardFor)
-        log.Printf("Modified X-Forwarded-For before setting: %s", modifiedXFF)
+		req.Header.Set(dbgPostXFF, modifiedXFF)
+#		log.Printf("Modified X-Forwarded-For before setting: %s", modifiedXFF)
 
         req.Header.Set(xForwardFor, existingFor)
         req.Header.Set(xRealIP, req.Header.Get(cfConnectingIP)) // Set X-Real-IP to the Cloudflare IP
