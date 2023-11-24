@@ -18,8 +18,8 @@ const (
 	cfConnectingIP = "CF-Connecting-IP"
 	cfVisitor      = "CF-Visitor"
 
-	dbgPreXFF = "X-DBG-Forward-For"
-	dbgPostXFF = "X-DBG-Forward-For"
+	dbgPreXFF = "X-DBG-PRE-Forward-For"
+	dbgPostXFF = "X-DBG-POST-Forward-For"
 )
 
 // Config the plugin configuration.
@@ -131,12 +131,12 @@ func (r *RealIPOverWriter) ServeHTTP(rw http.ResponseWriter, req *http.Request) 
             existingFor = req.Header.Get(cfConnectingIP)
         }
 
-        modifiedXFF := req.Header.Get(xForwardFor)
-		req.Header.Set(dbgPostXFF, modifiedXFF)
-//		log.Printf("Modified X-Forwarded-For before setting: %s", modifiedXFF)
-
         req.Header.Set(xForwardFor, existingFor)
         req.Header.Set(xRealIP, req.Header.Get(cfConnectingIP)) // Set X-Real-IP to the Cloudflare IP
+
+		modifiedXFF := req.Header.Get(xForwardFor)
+		req.Header.Set(dbgPostXFF, modifiedXFF)
+//		log.Printf("Modified X-Forwarded-For before setting: %s", modifiedXFF)
     } else {
 
 		// Constructing X-Forwarded-For header with direct IP
